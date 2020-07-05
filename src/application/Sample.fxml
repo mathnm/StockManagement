@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="801.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
+   <children>
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <TabPane prefHeight="523.0" prefWidth="801.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab text="Compra">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <top>
+                                    <VBox prefHeight="119.0" prefWidth="801.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox prefHeight="58.0" prefWidth="801.0">
+                                             <children>
+                                                <Label text="Ação:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="acao" prefHeight="25.0" prefWidth="70.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Label layoutX="20.0" layoutY="30.0" text="Valor unitário:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="vlrUnit" layoutX="67.0" layoutY="30.0" prefHeight="25.0" prefWidth="81.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Label layoutX="167.0" layoutY="30.0" text="Quantidade:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="qtd" layoutX="270.0" layoutY="30.0" prefHeight="25.0" prefWidth="81.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Label layoutX="148.0" layoutY="30.0" text="Data:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="data" prefHeight="25.0" prefWidth="81.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                          <Button mnemonicParsing="false" onAction="#insereNaTabela" prefHeight="25.0" prefWidth="702.0" text="Inserir">
+                                             <VBox.margin>
+                                                <Insets left="40.0" top="10.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </top>
+                                 <center>
+                                    <TableView fx:id="tblCompra" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                      <columns>
+                                        <TableColumn fx:id="colAcao" prefWidth="214.0" text="Ação" />
+                                        <TableColumn fx:id="colVlrUnit" prefWidth="214.0" text="Valor Unitário" />
+                                          <TableColumn fx:id="colQtd" prefWidth="185.0" text="Quantidade" />
+                                          <TableColumn fx:id="colData" prefWidth="187.0" text="Data" />
+                                      </columns>
+                                    </TableView>
+                                 </center>
+                                 <bottom>
+                                    <VBox BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <Label text="Valor Unitário de Venda:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="vlrUnitVen" prefHeight="25.0" prefWidth="78.0">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Button mnemonicParsing="false" onAction="#venda" prefHeight="25.0" prefWidth="103.0" text="Vender">
+                                                   <HBox.margin>
+                                                      <Insets left="400.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="20.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </bottom>
+                              </BorderPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Venda">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <center>
+                                    <TableView fx:id="tblVenda" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                       <columns>
+                                          <TableColumn fx:id="colAcaoV" prefWidth="91.0" text="Ação" />
+                                          <TableColumn fx:id="colVlrUnitC" prefWidth="185.0" text="Valor Unitário (Compra)" />
+                                          <TableColumn fx:id="colQtdV" prefWidth="99.0" text="Quantidade" />
+                                          <TableColumn fx:id="colVlrUnitV" prefWidth="158.0" text="Valor Unitário (Venda)" />
+                                          <TableColumn fx:id="colDataC" prefWidth="130.0" text="Data da Compra" />
+                                          <TableColumn fx:id="colDataV" prefWidth="137.0" text="Data da Venda" />
+                                       </columns>
+                                    </TableView>
+                                 </center>
+                                 <bottom>
+                                    <VBox BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <Label fx:id="lucro" text="Lucro total: R$ ">
+                                                   <font>
+                                                      <Font name="System Bold" size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Button mnemonicParsing="false" text="Desfazer Venda">
+                                                   <HBox.margin>
+                                                      <Insets left="550.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </bottom>
+                              </BorderPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
