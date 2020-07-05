@@ -23,22 +23,29 @@ public class SampleController {
     @FXML TableView<TableC> tblCompra;
     @FXML TableColumn<TableC, String> colAcao;
     @FXML TableColumn<TableC, Number> colVlrUnit;
+    @FXML TableColumn<TableC, Number> colVlrTotal;
     @FXML TableColumn<TableC, Number> colQtd;
     @FXML TableColumn<TableC, String> colData;
     
+    public double totC;
+    public double totV;
+    
     @FXML TableView<TableV> tblVenda;
     @FXML TableColumn<TableV, String> colAcaoV;
-    @FXML TableColumn<TableV, Number> colVlrUnitV;
     @FXML TableColumn<TableV, Number> colVlrUnitC;
+    @FXML TableColumn<TableV, Number> colVlrTotC;
     @FXML TableColumn<TableV, Number> colQtdV;
-    @FXML TableColumn<TableV, String> colDataC;
+    @FXML TableColumn<TableV, Number> colVlrUnitV;
+    @FXML TableColumn<TableV, Number> colVlrTotV;
     @FXML TableColumn<TableV, String> colDataV;
+    @FXML TableColumn<TableV, String> colDataC;
     
     ArrayList<TableC> tabelaC = new ArrayList<TableC>();
     ArrayList<TableV> tabelaV = new ArrayList<TableV>();
     
     public void insereNaTabela() {
-    	tabelaC.add(new TableC(acao.getText(),Double.parseDouble(vlrUnit.getText()),Integer.parseInt(qtd.getText()),data.getText()));
+    	totC = Double.parseDouble(vlrUnit.getText()) * Integer.parseInt(qtd.getText());
+    	tabelaC.add(new TableC(acao.getText(),Double.parseDouble(vlrUnit.getText()), totC, Integer.parseInt(qtd.getText()),data.getText()));
     	tblCompra.setItems(FXCollections.observableArrayList(tabelaC));
     }
     
@@ -48,14 +55,21 @@ public class SampleController {
 	}
     
     public void venda() {
+    	
+    	totC = tblCompra.getSelectionModel().getSelectedItem().getVlrTotal();
+    	totV = Double.parseDouble(vlrUnitVen.getText())*tblCompra.getSelectionModel().getSelectedItem().getQtd();
+    	
     	tabelaV.add(new TableV(tblCompra.getSelectionModel().getSelectedItem().getAcao(),
     			tblCompra.getSelectionModel().getSelectedItem().getVlrUnit(),
+    			totC,
     			tblCompra.getSelectionModel().getSelectedItem().getQtd(),
     			Double.parseDouble(vlrUnitVen.getText()),
+    			totV,
     			tblCompra.getSelectionModel().getSelectedItem().getData(),
     			new Date().toString()
     			));
     	tblVenda.setItems(FXCollections.observableArrayList(tabelaV));
+    	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
     	atualizaLucro();
     }
     
@@ -67,8 +81,8 @@ public class SampleController {
     		Double vlrFinal = 0.0;
     		
     		for (int i = 0; i < tabelaV.size(); i++) {
-    			vlrVenda 	+= colVlrUnitV.getCellData(i).doubleValue()*colQtdV.getCellData(i).doubleValue();
-    			vlrCompra	+= colVlrUnitC.getCellData(i).doubleValue()*colQtdV.getCellData(i).doubleValue();
+    			vlrVenda 	+= colVlrTotV.getCellData(i).doubleValue();
+    			vlrCompra	+= colVlrTotC.getCellData(i).doubleValue();
 			}
     		
     		vlrFinal = vlrVenda - vlrCompra;
@@ -78,16 +92,27 @@ public class SampleController {
     	
     }
     
+    public void excluiRegistroC() {
+    	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
+    }
+    
+    public void excluiRegistroV() {
+    	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
+    }
+    
     public void initialize() {
     	colAcao.setCellValueFactory(cellData -> cellData.getValue().acaoProperty());
     	colVlrUnit.setCellValueFactory(cellData -> cellData.getValue().vlrUnitProperty());
+    	colVlrTotal.setCellValueFactory(cellData -> cellData.getValue().vlrTotalProperty());
     	colQtd.setCellValueFactory(cellData -> cellData.getValue().qtdProperty());
     	colData.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
     	
-    	colAcaoV.setCellValueFactory(cellData -> cellData.getValue().acaoProperty());
-    	colVlrUnitV.setCellValueFactory(cellData -> cellData.getValue().vlrUnitVProperty());
+    	colAcaoV.setCellValueFactory(cellData -> cellData.getValue().acaoProperty());    	
     	colVlrUnitC.setCellValueFactory(cellData -> cellData.getValue().vlrUnitCProperty());
+    	colVlrTotC.setCellValueFactory(cellData -> cellData.getValue().vlrTotCProperty());
     	colQtdV.setCellValueFactory(cellData -> cellData.getValue().qtdProperty());
+    	colVlrUnitV.setCellValueFactory(cellData -> cellData.getValue().vlrUnitVProperty());
+    	colVlrTotV.setCellValueFactory(cellData -> cellData.getValue().vlrTotVProperty());
     	colDataC.setCellValueFactory(cellData -> cellData.getValue().dataCProperty());
     	colDataV.setCellValueFactory(cellData -> cellData.getValue().dataVProperty());
     	

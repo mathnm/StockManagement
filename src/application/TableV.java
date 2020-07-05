@@ -11,26 +11,32 @@ public class TableV {
 
 	private StringProperty acao;
 	private DoubleProperty vlrUnitC;
+	private DoubleProperty vlrTotC;
 	private IntegerProperty qtd;
 	private DoubleProperty vlrUnitV;
+	private DoubleProperty vlrTotV;
 	private StringProperty dataC;
 	private StringProperty dataV;
 	
 	public TableV() {
 		acao = new SimpleStringProperty();
 		vlrUnitC = new SimpleDoubleProperty();
+		vlrTotC = new SimpleDoubleProperty();
 		qtd = new SimpleIntegerProperty();
 		vlrUnitV = new SimpleDoubleProperty();
+		vlrTotV = new SimpleDoubleProperty();
 		dataC = new SimpleStringProperty();
 		dataV = new SimpleStringProperty();
 	}
 	
-	public TableV(String acao, double vlrUnitC, int qtd, double vlrUnitV, String dataC, String dataV) {
+	public TableV(String acao, double vlrUnitC, double vlrTotC, int qtd, double vlrUnitV, double vlrTotV, String dataC, String dataV) {
 		this();
 		setAcao(acao);
 		setVlrUnitC(vlrUnitC);
+		setVlrTotC(vlrTotC);
 		setQtd(qtd);
 		setVlrUnitV(vlrUnitV);
+		setVlrTotV(vlrTotV);
 		setDataC(dataC);
 		setDataV(dataV);
 	}
@@ -106,6 +112,36 @@ public class TableV {
 	public final void setDataV(final String dataV) {
 		this.dataVProperty().set(dataV);
 	}
+
+	public final DoubleProperty vlrTotCProperty() {
+		return this.vlrTotC;
+	}
+	
+
+	public final double getVlrTotC() {
+		return this.vlrTotCProperty().get();
+	}
+	
+
+	public final void setVlrTotC(final double vlrTotC) {
+		this.vlrTotCProperty().set(vlrTotC);
+	}
+	
+
+	public final DoubleProperty vlrTotVProperty() {
+		return this.vlrTotV;
+	}
+	
+
+	public final double getVlrTotV() {
+		return this.vlrTotVProperty().get();
+	}
+	
+
+	public final void setVlrTotV(final double vlrTotV) {
+		this.vlrTotVProperty().set(vlrTotV);
+	}
+	
 	
 	
 	

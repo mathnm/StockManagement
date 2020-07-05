@@ -11,13 +11,15 @@ public class TableC {
 
 	private StringProperty acao;
 	private DoubleProperty vlrUnit;
+	private DoubleProperty vlrTotal;
 	private IntegerProperty qtd;
 	private StringProperty data;
 	
-	public TableC(String acao, double vlrUnit, int qtd, String data) {
+	public TableC(String acao, double vlrUnit, double vlrTotal, int qtd, String data) {
 		this();
 		setAcao(acao);
 		setVlrUnit(vlrUnit);
+		setVlrTotal(vlrTotal);
 		setQtd(qtd);
 		setData(data);
 	}
@@ -25,6 +27,7 @@ public class TableC {
 	public TableC() {
 		acao = new SimpleStringProperty();
 		vlrUnit = new SimpleDoubleProperty();
+		vlrTotal = new SimpleDoubleProperty();
 		qtd = new SimpleIntegerProperty();
 		data = new SimpleStringProperty();
 	}
@@ -76,6 +79,21 @@ public class TableC {
 	public final void setData(final String data) {
 		this.dataProperty().set(data);
 	}
+
+	public final DoubleProperty vlrTotalProperty() {
+		return this.vlrTotal;
+	}
+	
+
+	public final double getVlrTotal() {
+		return this.vlrTotalProperty().get();
+	}
+	
+
+	public final void setVlrTotal(final double vlrTotal) {
+		this.vlrTotalProperty().set(vlrTotal);
+	}
+	
 	
 	
 	
