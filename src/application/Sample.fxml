@@ -176,7 +176,7 @@
                                                       <Insets bottom="20.0" left="20.0" top="20.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <Button defaultButton="true" mnemonicParsing="false" text="Desfazer Venda">
+                                                <Button defaultButton="true" mnemonicParsing="false" onAction="#desfazVenda" text="Desfazer Venda">
                                                    <HBox.margin>
                                                       <Insets left="800.0" top="20.0" />
                                                    </HBox.margin>

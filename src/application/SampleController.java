@@ -68,8 +68,9 @@ public class SampleController {
     			tblCompra.getSelectionModel().getSelectedItem().getData(),
     			new Date().toString()
     			));
-    	tblVenda.setItems(FXCollections.observableArrayList(tabelaV));
-    	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
+    	tblVenda.setItems(FXCollections.observableArrayList(tabelaV));					//inclui a ação vendida na visualização da tabela de venda
+    	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex()); 	//remove a ação vendida da visualizaçao da tabela de compra
+    	tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex()); 				//remove a ação vendida do array
     	atualizaLucro();
     }
     
@@ -93,11 +94,27 @@ public class SampleController {
     }
     
     public void excluiRegistroC() {
+    	tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex());
     	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
     }
     
     public void excluiRegistroV() {
+    	tabelaV.remove(tblVenda.getSelectionModel().getSelectedIndex());
     	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
+    }
+    
+    public void desfazVenda() {
+    	
+    	tabelaC.add(new TableC(tblVenda.getSelectionModel().getSelectedItem().getAcao(),
+    			tblVenda.getSelectionModel().getSelectedItem().getVlrUnitC(),
+    			tblVenda.getSelectionModel().getSelectedItem().getVlrTotC(),
+    			tblVenda.getSelectionModel().getSelectedItem().getQtd(),
+    			tblVenda.getSelectionModel().getSelectedItem().getDataC()
+    			));
+    	tblCompra.setItems(FXCollections.observableArrayList(tabelaC));
+    	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
+    	atualizaLucro();
+    	
     }
     
     public void initialize() {
