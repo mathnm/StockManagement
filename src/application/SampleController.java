@@ -69,12 +69,12 @@ public class SampleController {
     			new Date().toString()
     			));
     	tblVenda.setItems(FXCollections.observableArrayList(tabelaV));					//inclui a ação vendida na visualização da tabela de venda
-    	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex()); 	//remove a ação vendida da visualizaçao da tabela de compra
     	tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex()); 				//remove a ação vendida do array
-    	atualizaLucro();
+    	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex()); 	//remove a ação vendida da visualizaçao da tabela de compra
+    	atualizaLucroNaVenda();
     }
     
-    public void atualizaLucro() {
+    public void atualizaLucroNaVenda() {
     	
     	if(!tblVenda.getColumns().isEmpty()) {
     		Double vlrVenda = 0.0;
@@ -101,6 +101,7 @@ public class SampleController {
     public void excluiRegistroV() {
     	tabelaV.remove(tblVenda.getSelectionModel().getSelectedIndex());
     	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
+    	atualizaLucroDesfeito();
     }
     
     public void desfazVenda() {
@@ -112,10 +113,32 @@ public class SampleController {
     			tblVenda.getSelectionModel().getSelectedItem().getDataC()
     			));
     	tblCompra.setItems(FXCollections.observableArrayList(tabelaC));
+    	tabelaV.remove(tblVenda.getSelectionModel().getSelectedIndex());
     	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
-    	atualizaLucro();
+    	atualizaLucroDesfeito();
     	
     }
+	    
+	public void atualizaLucroDesfeito() {
+	    	
+	    	if(!tblVenda.getColumns().isEmpty()) {
+	    		Double vlrVenda = 0.0;
+	    		Double vlrCompra = 0.0;
+	    		Double vlrFinal = 0.0;
+	    		
+	    		for (int i = 0; i < tabelaV.size(); i++) {
+	    			vlrVenda 	+= colVlrTotV.getCellData(i).doubleValue();
+	    			vlrCompra	+= colVlrTotC.getCellData(i).doubleValue();
+				}
+	    		
+	    		vlrFinal = vlrVenda - vlrCompra;
+	    		
+	    		lucro.setText("Lucro: R$"+vlrFinal);
+	    	} else {
+	    		lucro.setText("R$ 0.00");
+	    	}
+	    	
+	    }
     
     public void initialize() {
     	colAcao.setCellValueFactory(cellData -> cellData.getValue().acaoProperty());
