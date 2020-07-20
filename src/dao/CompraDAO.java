@@ -5,6 +5,8 @@ import modelo.Compra;
 
 import java.sql.*;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompraDAO {
 
@@ -38,8 +40,33 @@ public class CompraDAO {
         
     } 
 	
-	public void seleciona() {
-		//...
+	public List<Compra> getList() {
+		List<Compra> compras = new ArrayList<>();
+		String sql = "SELECT * FROM acao";
+		try { 
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+            	Compra c = new Compra();
+            	c.setNome(rs.getString("nome"));
+            	c.setVlrUnit(rs.getDouble("vlrunit"));
+            	c.setQtd(rs.getInt("qtd"));
+            	c.setVlrTot(rs.getDouble("vlrtot"));
+            	c.setData(rs.getString("data"));
+            	
+            	compras.add(c);            	
+            }
+            stmt.close();
+            rs.close();
+            connection.close();
+        } 
+        catch (SQLException u) { 
+        	System.out.println("lista não retornada");
+            return null;
+        } 
+		
+		return compras;
+		
 	}
 	
 	public void exclui(Compra compra) {

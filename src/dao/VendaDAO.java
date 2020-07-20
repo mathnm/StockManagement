@@ -2,7 +2,10 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import factory.ConnectionFactory;
 import modelo.Venda;
@@ -45,8 +48,36 @@ private Connection connection;
         
     } 
 	
-	public void seleciona() {
-		//...
+	public List<Venda> getList() {
+		List<Venda> vendas = new ArrayList<>();
+		String sql = "SELECT * FROM venda";
+		try { 
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+            	Venda v = new Venda();
+            	v.setNome(rs.getString("nome"));
+            	v.setVlrUnitC(rs.getDouble("vlrunitc"));
+            	v.setVlrTotC(rs.getDouble("vlrtotc"));
+            	v.setQtd(rs.getInt("qtd"));
+            	v.setVlrUnitC(rs.getDouble("vlrunitv"));
+            	v.setVlrTotV(rs.getDouble("vlrtotv"));
+            	v.setDataV(rs.getString("datav"));
+            	v.setDataC(rs.getString("datac"));
+            	
+            	vendas.add(v);            	
+            }
+            stmt.close();
+            rs.close();
+            connection.close();
+        } 
+        catch (SQLException u) { 
+        	System.out.println("lista não retornada");
+            return null;
+        } 
+		
+		return vendas;
+		
 	}
 	
 	public void exclui(Venda venda) {
