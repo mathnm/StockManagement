@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -69,7 +70,7 @@
                                                       <Insets left="5.0" top="20.0" />
                                                    </HBox.margin>
                                                 </TextField>
-                                                <Label layoutX="148.0" layoutY="30.0" text="Data:">
+                                                <Label layoutX="148.0" layoutY="30.0" text="Data da Compra:">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font>
@@ -77,17 +78,20 @@
                                                       <Insets left="20.0" top="20.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <TextField fx:id="data" prefHeight="25.0" prefWidth="81.0">
+                                                <DatePicker fx:id="data">
                                                    <HBox.margin>
                                                       <Insets left="5.0" top="20.0" />
                                                    </HBox.margin>
-                                                </TextField>
+                                                </DatePicker>
                                              </children>
                                           </HBox>
                                           <Button mnemonicParsing="false" onAction="#insereNaTabela" prefHeight="25.0" prefWidth="702.0" text="Inserir">
                                              <VBox.margin>
                                                 <Insets left="40.0" top="10.0" />
                                              </VBox.margin>
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
                                           </Button>
                                        </children>
                                     </VBox>
@@ -121,15 +125,34 @@
                                                       <Insets left="10.0" top="20.0" />
                                                    </HBox.margin>
                                                 </TextField>
-                                                <Button defaultButton="true" mnemonicParsing="false" onAction="#venda" prefHeight="25.0" prefWidth="103.0" text="Vender">
+                                                <Label layoutX="30.0" layoutY="30.0" text="Data da Venda:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="50.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <DatePicker fx:id="dataVen">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </DatePicker>
+                                                <Button mnemonicParsing="false" onAction="#venda" prefHeight="25.0" prefWidth="103.0" style="-fx-background-color: olivedrab;" text="Vender" textFill="WHITE">
                                                    <HBox.margin>
                                                       <Insets left="300.0" top="20.0" />
                                                    </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
                                                 </Button>
-                                                <Button cancelButton="true" mnemonicParsing="false" onAction="#excluiRegistroC" prefHeight="25.0" prefWidth="103.0" text="Excluir">
+                                                <Button cancelButton="true" mnemonicParsing="false" onAction="#excluiRegistroC" prefHeight="25.0" prefWidth="103.0" style="-fx-background-color: indianred;" text="Excluir" textFill="WHITE">
                                                    <HBox.margin>
                                                       <Insets left="20.0" top="20.0" />
                                                    </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
                                                 </Button>
                                              </children>
                                              <VBox.margin>
@@ -176,15 +199,18 @@
                                                       <Insets bottom="20.0" left="20.0" top="20.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <Button defaultButton="true" mnemonicParsing="false" onAction="#desfazVenda" text="Desfazer Venda">
+                                                <Button mnemonicParsing="false" onAction="#desfazVenda" text="Desfazer Venda">
                                                    <HBox.margin>
                                                       <Insets left="800.0" top="20.0" />
                                                    </HBox.margin>
                                                 </Button>
-                                                <Button layoutX="988.0" layoutY="30.0" mnemonicParsing="false" onAction="#excluiRegistroV" text="Excluir">
+                                                <Button layoutX="988.0" layoutY="30.0" mnemonicParsing="false" onAction="#excluiRegistroV" style="-fx-background-color: indianred;" text="Excluir" textFill="WHITE">
                                                    <HBox.margin>
                                                       <Insets left="20.0" top="20.0" />
                                                    </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
                                                 </Button>
                                              </children>
                                           </HBox>

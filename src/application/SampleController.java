@@ -2,20 +2,29 @@ package application;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import modelo.Compra;
+import modelo.Venda;
 
 import java.util.ArrayList;
-import java.util.Date;
+
+import dao.CompraDAO;
+import dao.VendaDAO;
 
 public class SampleController {
 
     @FXML TextField acao;
     @FXML TextField vlrUnit;
     @FXML TextField qtd;
-    @FXML TextField data;
+    @FXML DatePicker data;
+    @FXML DatePicker dataVen;
     
     @FXML TextField vlrUnitVen;
     @FXML Label lucro;
@@ -44,9 +53,36 @@ public class SampleController {
     ArrayList<TableV> tabelaV = new ArrayList<TableV>();
     
     public void insereNaTabela() {
-    	totC = Double.parseDouble(vlrUnit.getText()) * Integer.parseInt(qtd.getText());
-    	tabelaC.add(new TableC(acao.getText(),Double.parseDouble(vlrUnit.getText()), totC, Integer.parseInt(qtd.getText()),data.getText()));
-    	tblCompra.setItems(FXCollections.observableArrayList(tabelaC));
+    	if(acao.getText().isEmpty() || vlrUnit.getText().isEmpty() || qtd.getText().isEmpty() || data.getValue().toString().isEmpty()) {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Erro!");
+    		alert.setHeaderText("Campo em branco.");
+    		alert.setContentText("Preencha todos os campos da compra.");
+
+    		alert.showAndWait();    		
+    		
+    	} else {
+    		totC = Double.parseDouble(vlrUnit.getText()) * Integer.parseInt(qtd.getText());
+        	tabelaC.add(new TableC(acao.getText(),Double.parseDouble(vlrUnit.getText()), totC, Integer.parseInt(qtd.getText()),data.getValue().toString()));
+        	tblCompra.setItems(FXCollections.observableArrayList(tabelaC));
+        	
+        	Compra compra = new Compra();
+        	compra.setNome(acao.getText());
+        	compra.setVlrUnit(Double.parseDouble(vlrUnit.getText()));
+        	compra.setQtd(Integer.parseInt(qtd.getText()));
+        	compra.setVlrTot(totC);
+        	compra.setData(data.getValue().toString());
+        	
+        	CompraDAO dao = new CompraDAO();
+        	dao.adiciona(compra);
+        	
+        	acao.setText("");
+        	vlrUnit.setText("");
+        	qtd.setText("");
+        	data.setValue(null);
+        	
+    	}
+    	    	
     }
     
     
@@ -55,23 +91,62 @@ public class SampleController {
 	}
     
     public void venda() {
+    	//try {
+    		
+    		totC = tblCompra.getSelectionModel().getSelectedItem().getVlrTotal();
+        	totV = Double.parseDouble(vlrUnitVen.getText())*tblCompra.getSelectionModel().getSelectedItem().getQtd();
+        	
+        	Venda venda = new Venda();
+        	
+        	venda.setNome(tblCompra.getSelectionModel().getSelectedItem().getAcao());
+        	venda.setVlrUnitC(tblCompra.getSelectionModel().getSelectedItem().getVlrUnit());
+        	venda.setVlrTotC(totC);
+        	venda.setQtd(tblCompra.getSelectionModel().getSelectedItem().getQtd());
+        	venda.setVlrUnitV(Double.parseDouble(vlrUnitVen.getText()));
+        	venda.setVlrTotV(totV);
+        	venda.setDataV(dataVen.getValue().toString());
+        	venda.setDataC(tblCompra.getSelectionModel().getSelectedItem().getData());
+        	
+        	VendaDAO dao = new VendaDAO();
+        	dao.adiciona(venda);
+        	
+        	tabelaV.add(new TableV(tblCompra.getSelectionModel().getSelectedItem().getAcao(),
+        			tblCompra.getSelectionModel().getSelectedItem().getVlrUnit(),
+        			totC,
+        			tblCompra.getSelectionModel().getSelectedItem().getQtd(),
+        			Double.parseDouble(vlrUnitVen.getText()),
+        			totV,
+        			tblCompra.getSelectionModel().getSelectedItem().getData(),
+        			dataVen.getValue().toString()
+        			));        	
+        	tblVenda.setItems(FXCollections.observableArrayList(tabelaV));					//inclui a ação vendida na visualização da tabela de venda
+        	
+        	Compra compra = new Compra();
+        	
+        	compra.setNome(tblCompra.getSelectionModel().getSelectedItem().getAcao());
+        	compra.setVlrUnit(tblCompra.getSelectionModel().getSelectedItem().getVlrUnit());
+        	compra.setQtd(tblCompra.getSelectionModel().getSelectedItem().getQtd());
+        	compra.setVlrTot(tblCompra.getSelectionModel().getSelectedItem().getVlrTotal());
+        	compra.setData(tblCompra.getSelectionModel().getSelectedItem().getData());
+        	
+        	CompraDAO daoC = new CompraDAO();
+        	daoC.exclui(compra);
+        	
+        	
+        	tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex()); 				//remove a ação vendida do array
+        	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex()); 	//remove a ação vendida da visualizaçao da tabela de compra
+        	atualizaLucroNaVenda();
+//    	} catch (Exception e) {
+//    		Alert alert = new Alert(AlertType.ERROR);
+//    		alert.setTitle("Erro!");
+//    		alert.setHeaderText("Possíveis erros:");
+//    		alert.setContentText("- Valor de venda inválido \n"
+//    				+ "- Data da venda em branco \n"
+//    				+ "- Nenhuma ação selecionada para venda");
+//
+//    		alert.showAndWait();
+//    	}
     	
-    	totC = tblCompra.getSelectionModel().getSelectedItem().getVlrTotal();
-    	totV = Double.parseDouble(vlrUnitVen.getText())*tblCompra.getSelectionModel().getSelectedItem().getQtd();
-    	
-    	tabelaV.add(new TableV(tblCompra.getSelectionModel().getSelectedItem().getAcao(),
-    			tblCompra.getSelectionModel().getSelectedItem().getVlrUnit(),
-    			totC,
-    			tblCompra.getSelectionModel().getSelectedItem().getQtd(),
-    			Double.parseDouble(vlrUnitVen.getText()),
-    			totV,
-    			tblCompra.getSelectionModel().getSelectedItem().getData(),
-    			new Date().toString()
-    			));
-    	tblVenda.setItems(FXCollections.observableArrayList(tabelaV));					//inclui a ação vendida na visualização da tabela de venda
-    	tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex()); 				//remove a ação vendida do array
-    	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex()); 	//remove a ação vendida da visualizaçao da tabela de compra
-    	atualizaLucroNaVenda();
     }
     
     public void atualizaLucroNaVenda() {
@@ -94,14 +169,36 @@ public class SampleController {
     }
     
     public void excluiRegistroC() {
-    	tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex());
-    	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
+    	Alert alert = new Alert(AlertType.CONFIRMATION, "Deletar ação?", ButtonType.YES, ButtonType.NO);
+    	alert.showAndWait();
+
+    	if (alert.getResult() == ButtonType.YES) {
+    		
+    		Compra compra = new Compra();
+    		compra.setNome(tblCompra.getSelectionModel().getSelectedItem().getAcao());
+        	compra.setVlrUnit(tblCompra.getSelectionModel().getSelectedItem().getVlrUnit());
+        	compra.setQtd(tblCompra.getSelectionModel().getSelectedItem().getQtd());
+        	compra.setVlrTot(tblCompra.getSelectionModel().getSelectedItem().getVlrTotal());
+        	compra.setData(tblCompra.getSelectionModel().getSelectedItem().getData());
+        	
+        	CompraDAO dao = new CompraDAO();
+        	dao.exclui(compra);
+    		
+    		tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex());
+        	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
+    	}
+    	
     }
     
     public void excluiRegistroV() {
-    	tabelaV.remove(tblVenda.getSelectionModel().getSelectedIndex());
-    	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
-    	atualizaLucroDesfeito();
+    	Alert alert = new Alert(AlertType.CONFIRMATION, "Deletar venda?", ButtonType.YES, ButtonType.NO);
+    	alert.showAndWait();
+    	
+    	if (alert.getResult() == ButtonType.YES) {
+    		tabelaV.remove(tblVenda.getSelectionModel().getSelectedIndex());
+    		tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
+    		atualizaLucroDesfeito();
+    	}
     }
     
     public void desfazVenda() {
@@ -113,9 +210,34 @@ public class SampleController {
     			tblVenda.getSelectionModel().getSelectedItem().getDataC()
     			));
     	tblCompra.setItems(FXCollections.observableArrayList(tabelaC));
+    	
+    	Compra compra = new Compra();
+		compra.setNome(tblVenda.getSelectionModel().getSelectedItem().getAcao());
+    	compra.setVlrUnit(tblVenda.getSelectionModel().getSelectedItem().getVlrUnitC());
+    	compra.setQtd(tblVenda.getSelectionModel().getSelectedItem().getQtd());
+    	compra.setVlrTot(tblVenda.getSelectionModel().getSelectedItem().getVlrTotC());
+    	compra.setData(tblVenda.getSelectionModel().getSelectedItem().getDataC());
+    	
+    	CompraDAO dao = new CompraDAO();
+    	dao.adiciona(compra);
+    	
     	tabelaV.remove(tblVenda.getSelectionModel().getSelectedIndex());
     	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
     	atualizaLucroDesfeito();
+    	
+    	Venda venda = new Venda();
+    	
+    	venda.setNome(tblCompra.getSelectionModel().getSelectedItem().getAcao());
+    	venda.setVlrUnitC(tblCompra.getSelectionModel().getSelectedItem().getVlrUnit());
+    	venda.setVlrTotC(totC);
+    	venda.setQtd(tblCompra.getSelectionModel().getSelectedItem().getQtd());
+    	venda.setVlrUnitV(Double.parseDouble(vlrUnitVen.getText()));
+    	venda.setVlrTotV(totV);
+    	venda.setDataV(dataVen.getValue().toString());
+    	venda.setDataC(tblCompra.getSelectionModel().getSelectedItem().getData());
+    	
+    	VendaDAO daoV = new VendaDAO();
+    	daoV.exclui(venda);
     	
     }
 	    
@@ -159,5 +281,7 @@ public class SampleController {
     	//TALVEZ SEJA AQUI QUE EU TENHA QUE LER DO BANCO DE DADOS OS DADOS JA GRAVADOS
 		atualizaTbl();
 	}
+    
+    
     
 }
