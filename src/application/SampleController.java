@@ -133,8 +133,13 @@ public class SampleController {
         	CompraDAO daoC = new CompraDAO();
         	daoC.exclui(compra);
         	
-        	
-        	tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex()); 				//remove a ação vendida do array
+        	//problema
+        	for (int i = 0; i < tabelaC.size(); i++) {
+				if(tabelaC.get(i).getAcao().equals(tblCompra.getSelectionModel().getSelectedItem().getAcao()) && tabelaC.get(i).getData().equals(tblCompra.getSelectionModel().getSelectedItem().getData()) && tabelaC.get(i).getVlrUnit() == tblCompra.getSelectionModel().getSelectedItem().getVlrUnit()) {
+					tabelaC.remove(i);
+				}
+			} 
+        	//tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex()); 				//remove a ação vendida do array
         	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex()); 	//remove a ação vendida da visualizaçao da tabela de compra
         	atualizaLucroNaVenda();
         	
@@ -189,7 +194,12 @@ public class SampleController {
             	CompraDAO dao = new CompraDAO();
             	dao.exclui(compra);
         		
-        		tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex());
+            	//problema
+            	for (int i = 0; i < tabelaC.size(); i++) {
+    				if(tabelaC.get(i).getAcao().equals(tblCompra.getSelectionModel().getSelectedItem().getAcao()) && tabelaC.get(i).getData().equals(tblCompra.getSelectionModel().getSelectedItem().getData()) && tabelaC.get(i).getVlrUnit() == tblCompra.getSelectionModel().getSelectedItem().getVlrUnit()) {
+    					tabelaC.remove(i);
+    				}
+    			} 
             	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
         	} 	
     }
@@ -214,7 +224,12 @@ public class SampleController {
         		VendaDAO dao = new VendaDAO();
         		dao.exclui(venda);
         		
-        		tabelaV.remove(tblVenda.getSelectionModel().getSelectedIndex());
+        		//problema
+        		for (int i = 0; i < tabelaV.size(); i++) {
+    				if(tabelaV.get(i).getAcao().equals(tblVenda.getSelectionModel().getSelectedItem().getAcao()) && tabelaV.get(i).getDataC().equals(tblVenda.getSelectionModel().getSelectedItem().getDataC()) && tabelaV.get(i).getVlrUnitC() == tblVenda.getSelectionModel().getSelectedItem().getVlrUnitC() && tabelaV.get(i).getDataV().equals(tblVenda.getSelectionModel().getSelectedItem().getDataV())) {
+    					tabelaV.remove(i);
+    				}
+    			}        		
         		tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
         		atualizaLucroDesfeito();
         	}
@@ -259,7 +274,12 @@ public class SampleController {
 	    	VendaDAO daoV = new VendaDAO();
 	    	daoV.exclui(venda);
 	    	
-	    	tabelaV.remove(tblVenda.getSelectionModel().getSelectedIndex());
+	    	//problema
+	    	for (int i = 0; i < tabelaV.size(); i++) {
+				if(tabelaV.get(i).getAcao().equals(tblVenda.getSelectionModel().getSelectedItem().getAcao()) && tabelaV.get(i).getDataC().equals(tblVenda.getSelectionModel().getSelectedItem().getDataC()) && tabelaV.get(i).getVlrUnitC() == tblVenda.getSelectionModel().getSelectedItem().getVlrUnitC() && tabelaV.get(i).getDataV().equals(tblVenda.getSelectionModel().getSelectedItem().getDataV())) {
+					tabelaV.remove(i);
+				}
+			}    	
 	    	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
 	    	atualizaLucroDesfeito();
     	}
