@@ -60,7 +60,7 @@ private Connection connection;
             	v.setVlrUnitC(rs.getDouble("vlrunitc"));
             	v.setVlrTotC(rs.getDouble("vlrtotc"));
             	v.setQtd(rs.getInt("qtd"));
-            	v.setVlrUnitC(rs.getDouble("vlrunitv"));
+            	v.setVlrUnitV(rs.getDouble("vlrunitv"));
             	v.setVlrTotV(rs.getDouble("vlrtotv"));
             	v.setDataV(rs.getString("datav"));
             	v.setDataC(rs.getString("datac"));
