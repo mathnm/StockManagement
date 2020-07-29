@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import modelo.Compra;
 import modelo.Venda;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class SampleController {
     
     @FXML TextField vlrUnitVen;
     @FXML Label lucro;
+    @FXML Label investido;
     
     @FXML TableView<TableC> tblCompra;
     @FXML TableColumn<TableC, String> colAcao;
@@ -52,6 +54,8 @@ public class SampleController {
     
     ArrayList<TableC> tabelaC = new ArrayList<TableC>();
     ArrayList<TableV> tabelaV = new ArrayList<TableV>();
+    
+    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
     
     public void insereNaTabela() {
     	if(acao.getText().isEmpty() || vlrUnit.getText().isEmpty() || qtd.getText().isEmpty() || data.getValue().toString().isEmpty()) {
@@ -81,6 +85,8 @@ public class SampleController {
         	vlrUnit.setText("");
         	qtd.setText("");
         	data.setValue(null);
+        	
+        	atualizaInvestimentoNaCompra();
         	
     	}
     	    	
@@ -142,6 +148,7 @@ public class SampleController {
         	//tabelaC.remove(tblCompra.getSelectionModel().getSelectedIndex()); 				//remove a ação vendida do array
         	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex()); 	//remove a ação vendida da visualizaçao da tabela de compra
         	atualizaLucroNaVenda();
+        	atualizaInvestimentoNaCompra();
         	
         	vlrUnitVen.setText("");
         	dataVen.setValue(null);
@@ -173,7 +180,21 @@ public class SampleController {
     		
     		vlrFinal = vlrVenda - vlrCompra;
     		
-    		lucro.setText("Lucro: R$"+vlrFinal);
+    		lucro.setText("Lucro: R$"+decimalFormat.format(vlrFinal));
+    	}
+    	
+    }
+    
+    public void atualizaInvestimentoNaCompra() {
+    	
+    	if(!tblCompra.getColumns().isEmpty()) {
+    		Double vlrCompra = 0.0;
+    		
+    		for (int i = 0; i < tabelaC.size(); i++) {
+    			vlrCompra	+= colVlrTotal.getCellData(i).doubleValue();
+			}
+    		
+    		investido.setText("Investido: R$"+decimalFormat.format(vlrCompra));
     	}
     	
     }
@@ -282,6 +303,7 @@ public class SampleController {
 			}    	
 	    	tblVenda.getItems().remove(tblVenda.getSelectionModel().getSelectedIndex());
 	    	atualizaLucroDesfeito();
+	    	atualizaInvestimentoNaCompra();
     	}
     	
     }
@@ -300,7 +322,7 @@ public class SampleController {
 	    		
 	    		vlrFinal = vlrVenda - vlrCompra;
 	    		
-	    		lucro.setText("Lucro: R$"+vlrFinal);
+	    		lucro.setText("Lucro: R$"+decimalFormat.format(vlrFinal));
 	    	} else {
 	    		lucro.setText("R$ 0.00");
 	    	}
@@ -333,7 +355,7 @@ public class SampleController {
     	
     	if(vendas != null) {
     		for (int i = 0; i < vendas.size(); i++) {
-    			tabelaV.add(new TableV(vendas.get(i).getNome(),vendas.get(i).getVlrUnitC(), vendas.get(i).getVlrTotC(), vendas.get(i).getQtd(),vendas.get(i).getVlrUnitV(), vendas.get(i).getVlrTotV(), vendas.get(i).getDataV(), vendas.get(i).getDataC()));
+    			tabelaV.add(new TableV(vendas.get(i).getNome(),vendas.get(i).getVlrUnitC(), vendas.get(i).getVlrTotC(), vendas.get(i).getQtd(),vendas.get(i).getVlrUnitV(), vendas.get(i).getVlrTotV(), vendas.get(i).getDataC(), vendas.get(i).getDataV()));
             	tblVenda.setItems(FXCollections.observableArrayList(tabelaV));
 			}
     	}
@@ -347,7 +369,8 @@ public class SampleController {
     	colDataC.setCellValueFactory(cellData -> cellData.getValue().dataCProperty());
     	colDataV.setCellValueFactory(cellData -> cellData.getValue().dataVProperty());
     	
-    	//TALVEZ SEJA AQUI QUE EU TENHA QUE LER DO BANCO DE DADOS OS DADOS JA GRAVADOS
+    	atualizaInvestimentoNaCompra();
+    	atualizaLucroNaVenda();
 		atualizaTbl();
 	}
     

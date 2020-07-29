@@ -138,9 +138,17 @@
                                                       <Insets left="5.0" top="20.0" />
                                                    </HBox.margin>
                                                 </DatePicker>
+                                                <Label fx:id="investido" prefHeight="21.0" prefWidth="225.0" text="Investido:">
+                                                   <font>
+                                                      <Font name="System Bold" size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
                                                 <Button mnemonicParsing="false" onAction="#venda" prefHeight="25.0" prefWidth="103.0" style="-fx-background-color: olivedrab;" text="Vender" textFill="WHITE">
                                                    <HBox.margin>
-                                                      <Insets left="300.0" top="20.0" />
+                                                      <Insets left="50.0" top="20.0" />
                                                    </HBox.margin>
                                                    <font>
                                                       <Font name="System Bold" size="12.0" />
