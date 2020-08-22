@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import modelo.Compra;
 import modelo.Venda;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,15 +69,19 @@ public class SampleController {
     		alert.showAndWait();    		
     		
     	} else {
-    		totC = Double.parseDouble(vlrUnit.getText()) * Integer.parseInt(qtd.getText());
+    		totC = Double.parseDouble(vlrUnit.getText()) * Double.parseDouble(qtd.getText());
         	tabelaC.add(new TableC(acao.getText(),Double.parseDouble(vlrUnit.getText()), totC, Integer.parseInt(qtd.getText()),data.getValue().toString()));
         	tblCompra.setItems(FXCollections.observableArrayList(tabelaC));
+        	
+        	//DecimalFormat df = new DecimalFormat("#.00");
+        	
+        	BigDecimal bd = new BigDecimal(totC).setScale(2, RoundingMode.HALF_EVEN);
         	
         	Compra compra = new Compra();
         	compra.setNome(acao.getText());
         	compra.setVlrUnit(Double.parseDouble(vlrUnit.getText()));
         	compra.setQtd(Integer.parseInt(qtd.getText()));
-        	compra.setVlrTot(totC);
+        	compra.setVlrTot(bd.doubleValue());
         	compra.setData(data.getValue().toString());
         	
         	CompraDAO dao = new CompraDAO();
@@ -105,12 +111,15 @@ public class SampleController {
         	
         	Venda venda = new Venda();
         	
+        	BigDecimal bdC = new BigDecimal(totC).setScale(2, RoundingMode.HALF_EVEN);
+        	BigDecimal bdV = new BigDecimal(totV).setScale(2, RoundingMode.HALF_EVEN);
+        	
         	venda.setNome(tblCompra.getSelectionModel().getSelectedItem().getAcao());
         	venda.setVlrUnitC(tblCompra.getSelectionModel().getSelectedItem().getVlrUnit());
-        	venda.setVlrTotC(totC);
+        	venda.setVlrTotC(bdC.doubleValue());
         	venda.setQtd(tblCompra.getSelectionModel().getSelectedItem().getQtd());
         	venda.setVlrUnitV(Double.parseDouble(vlrUnitVen.getText()));
-        	venda.setVlrTotV(totV);
+        	venda.setVlrTotV(bdV.doubleValue());
         	venda.setDataV(dataVen.getValue().toString());
         	venda.setDataC(tblCompra.getSelectionModel().getSelectedItem().getData());
         	
@@ -139,7 +148,6 @@ public class SampleController {
         	CompraDAO daoC = new CompraDAO();
         	daoC.exclui(compra);
         	
-        	//problema
         	for (int i = 0; i < tabelaC.size(); i++) {
 				if(tabelaC.get(i).getAcao().equals(tblCompra.getSelectionModel().getSelectedItem().getAcao()) && tabelaC.get(i).getData().equals(tblCompra.getSelectionModel().getSelectedItem().getData()) && tabelaC.get(i).getVlrUnit() == tblCompra.getSelectionModel().getSelectedItem().getVlrUnit()) {
 					tabelaC.remove(i);
@@ -222,6 +230,7 @@ public class SampleController {
     				}
     			} 
             	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
+            	atualizaInvestimentoNaCompra();
         	} 	
     }
     
@@ -324,7 +333,7 @@ public class SampleController {
 	    		
 	    		lucro.setText("Lucro: R$"+decimalFormat.format(vlrFinal));
 	    	} else {
-	    		lucro.setText("R$ 0.00");
+	    		lucro.setText("R$ 0,00");
 	    	}
 	    	
 	    }
