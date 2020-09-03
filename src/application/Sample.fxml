@@ -230,6 +230,123 @@
                         </AnchorPane>
                   </content>
                 </Tab>
+                  <Tab text="Dividendos">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <center>
+                                    <TableView fx:id="tblDividendo" prefHeight="462.0" prefWidth="1136.0" BorderPane.alignment="CENTER">
+                                       <columns>
+                                          <TableColumn fx:id="colAcaoD" prefWidth="91.0" text="Ação" />
+                                          <TableColumn fx:id="colQtdD" prefWidth="113.0" text="Quantidade" />
+                                          <TableColumn fx:id="colVlrUnitD" prefWidth="189.0" text="Valor/Unidade" />
+                                          <TableColumn fx:id="colVlrTotalD" prefWidth="189.0" text="Valor Total" />
+                                          <TableColumn fx:id="colDataD" prefWidth="135.0" text="Data do Pagamento" />
+                                       </columns>
+                                    </TableView>
+                                 </center>
+                                 <bottom>
+                                    <VBox BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <Label fx:id="recebido" prefHeight="21.0" prefWidth="233.0" text="Total Recebido: R$ ">
+                                                   <font>
+                                                      <Font name="System Bold" size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Button layoutX="988.0" layoutY="30.0" mnemonicParsing="false" onAction="#excluiRegistroD" style="-fx-background-color: indianred;" text="Excluir" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets left="750.0" top="20.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </bottom>
+                                 <top>
+                                    <VBox prefHeight="112.0" prefWidth="1136.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox prefHeight="58.0" prefWidth="801.0">
+                                             <children>
+                                                <Label text="Ação:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="acaoD" prefHeight="25.0" prefWidth="70.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Label layoutX="20.0" layoutY="30.0" text="Valor/Unidade:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="vlrUnitD" layoutX="67.0" layoutY="30.0" prefHeight="25.0" prefWidth="81.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Label layoutX="167.0" layoutY="30.0" text="Quantidade:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="qtdD" layoutX="270.0" layoutY="30.0" prefHeight="25.0" prefWidth="81.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Label layoutX="148.0" layoutY="30.0" text="Data do Pagamento:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <DatePicker fx:id="dataD">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </DatePicker>
+                                             </children>
+                                          </HBox>
+                                          <Button mnemonicParsing="false" onAction="#recebeDiv" prefHeight="25.0" prefWidth="702.0" text="Inserir">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets left="40.0" top="10.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </top>
+                              </BorderPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
               </tabs>
             </TabPane>
          </center>

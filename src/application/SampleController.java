@@ -11,6 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import modelo.Compra;
+import modelo.Dividendo;
 import modelo.Venda;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.CompraDAO;
+import dao.DividendoDAO;
 import dao.VendaDAO;
 
 public class SampleController {
@@ -30,9 +32,15 @@ public class SampleController {
     @FXML DatePicker data;
     @FXML DatePicker dataVen;
     
+    @FXML TextField acaoD;
+    @FXML TextField vlrUnitD;
+    @FXML TextField qtdD;
+    @FXML DatePicker dataD;
+    
     @FXML TextField vlrUnitVen;
     @FXML Label lucro;
     @FXML Label investido;
+    @FXML Label recebido;
     
     @FXML TableView<TableC> tblCompra;
     @FXML TableColumn<TableC, String> colAcao;
@@ -43,6 +51,7 @@ public class SampleController {
     
     public double totC;
     public double totV;
+    public double totD;
     
     @FXML TableView<TableV> tblVenda;
     @FXML TableColumn<TableV, String> colAcaoV;
@@ -54,8 +63,16 @@ public class SampleController {
     @FXML TableColumn<TableV, String> colDataV;
     @FXML TableColumn<TableV, String> colDataC;
     
+    @FXML TableView<TableD> tblDividendo;
+    @FXML TableColumn<TableD, String> colAcaoD;
+    @FXML TableColumn<TableD, Number> colVlrUnitD;
+    @FXML TableColumn<TableD, Number> colVlrTotalD;
+    @FXML TableColumn<TableD, Number> colQtdD;
+    @FXML TableColumn<TableD, String> colDataD;
+    
     ArrayList<TableC> tabelaC = new ArrayList<TableC>();
     ArrayList<TableV> tabelaV = new ArrayList<TableV>();
+    ArrayList<TableD> tabelaD = new ArrayList<TableD>();
     
     DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
     
@@ -73,7 +90,7 @@ public class SampleController {
         	tabelaC.add(new TableC(acao.getText(),Double.parseDouble(vlrUnit.getText()), totC, Integer.parseInt(qtd.getText()),data.getValue().toString()));
         	tblCompra.setItems(FXCollections.observableArrayList(tabelaC));
         	
-        	//DecimalFormat df = new DecimalFormat("#.00");
+        	
         	
         	BigDecimal bd = new BigDecimal(totC).setScale(2, RoundingMode.HALF_EVEN);
         	
@@ -94,6 +111,44 @@ public class SampleController {
         	
         	atualizaInvestimentoNaCompra();
         	
+    	}
+    	    	
+    }
+    
+    public void recebeDiv() {
+    	if(acaoD.getText().isEmpty() || vlrUnitD.getText().isEmpty() || qtdD.getText().isEmpty() || dataD.getValue().toString().isEmpty()) {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Erro!");
+    		alert.setHeaderText("Campo em branco.");
+    		alert.setContentText("Preencha todos os campos da compra.");
+
+    		alert.showAndWait();    		
+    		
+    	} else {
+    		totD = Double.parseDouble(vlrUnitD.getText()) * Double.parseDouble(qtdD.getText());
+        	tabelaD.add(new TableD(acaoD.getText(),Integer.parseInt(qtdD.getText()),Double.parseDouble(vlrUnitD.getText()), totD,dataD.getValue().toString()));
+        	tblDividendo.setItems(FXCollections.observableArrayList(tabelaD));
+        	
+        	//DecimalFormat df = new DecimalFormat("#.00");
+        	
+        	BigDecimal bd = new BigDecimal(totD).setScale(2, RoundingMode.HALF_EVEN);
+        	
+        	Dividendo dividendo = new Dividendo();
+        	dividendo.setNome(acaoD.getText());
+        	dividendo.setVlrUnit(Double.parseDouble(vlrUnitD.getText()));
+        	dividendo.setQtd(Integer.parseInt(qtdD.getText()));
+        	dividendo.setVlrTot(bd.doubleValue());
+        	dividendo.setData(dataD.getValue().toString());
+        	
+        	DividendoDAO dao = new DividendoDAO();
+        	dao.adiciona(dividendo);
+        	
+        	acaoD.setText("");
+        	vlrUnitD.setText("");
+        	qtdD.setText("");
+        	dataD.setValue(null);
+        	
+        	atualizaTotalRecebido();
     	}
     	    	
     }
@@ -207,6 +262,20 @@ public class SampleController {
     	
     }
     
+    public void atualizaTotalRecebido() {
+    	
+    	if(!tblDividendo.getColumns().isEmpty()) {
+    		Double vlrRecebido = 0.0;
+    		
+    		for (int i = 0; i < tabelaD.size(); i++) {
+    			vlrRecebido	+= colVlrTotalD.getCellData(i).doubleValue();
+			}
+    		
+    		recebido.setText("Total Recebido: R$"+decimalFormat.format(vlrRecebido));
+    	}
+    	
+    }
+    
     public void excluiRegistroC() {
     		Alert alert = new Alert(AlertType.CONFIRMATION, "Deletar ação?", ButtonType.YES, ButtonType.NO);
         	alert.showAndWait();
@@ -232,6 +301,33 @@ public class SampleController {
             	tblCompra.getItems().remove(tblCompra.getSelectionModel().getSelectedIndex());
             	atualizaInvestimentoNaCompra();
         	} 	
+    }
+    
+    public void excluiRegistroD() {
+    	Alert alert = new Alert(AlertType.CONFIRMATION, "Deletar dividendo?", ButtonType.YES, ButtonType.NO);
+    	alert.showAndWait();
+		
+		if (alert.getResult() == ButtonType.YES) {
+    		
+    		Dividendo dividendo = new Dividendo();
+    		dividendo.setNome(tblDividendo.getSelectionModel().getSelectedItem().getAcao());
+    		dividendo.setQtd(tblDividendo.getSelectionModel().getSelectedItem().getQtd());
+    		dividendo.setVlrUnit(tblDividendo.getSelectionModel().getSelectedItem().getVlrUnit());
+    		dividendo.setVlrTot(tblDividendo.getSelectionModel().getSelectedItem().getVlrTotal());
+    		dividendo.setData(tblDividendo.getSelectionModel().getSelectedItem().getData());
+        	
+        	DividendoDAO dao = new DividendoDAO();
+        	dao.exclui(dividendo);
+    		
+        	//problema
+        	for (int i = 0; i < tabelaD.size(); i++) {
+				if(tabelaD.get(i).getAcao().equals(tblDividendo.getSelectionModel().getSelectedItem().getAcao()) && tabelaD.get(i).getData().equals(tblDividendo.getSelectionModel().getSelectedItem().getData()) && tabelaD.get(i).getVlrUnit() == tblDividendo.getSelectionModel().getSelectedItem().getVlrUnit()) {
+					tabelaD.remove(i);
+				}
+			} 
+        	tblDividendo.getItems().remove(tblDividendo.getSelectionModel().getSelectedIndex());
+        	atualizaTotalRecebido();
+    	}
     }
     
     public void excluiRegistroV() {
@@ -378,8 +474,25 @@ public class SampleController {
     	colDataC.setCellValueFactory(cellData -> cellData.getValue().dataCProperty());
     	colDataV.setCellValueFactory(cellData -> cellData.getValue().dataVProperty());
     	
+    	DividendoDAO daoD = new DividendoDAO();
+    	List<Dividendo> dividendos = daoD.getList();
+    	
+    	if(dividendos != null) {
+    		for (int i = 0; i < dividendos.size(); i++) {
+				tabelaD.add(new TableD(dividendos.get(i).getNome(),dividendos.get(i).getQtd(),dividendos.get(i).getVlrUnit(),dividendos.get(i).getVlrTot(),dividendos.get(i).getData()));
+				tblDividendo.setItems(FXCollections.observableArrayList(tabelaD));
+			}
+    	}
+    	
+    	colAcaoD.setCellValueFactory(cellData -> cellData.getValue().acaoProperty());
+    	colQtdD.setCellValueFactory(cellData -> cellData.getValue().qtdProperty());
+    	colVlrUnitD.setCellValueFactory(cellData -> cellData.getValue().vlrUnitProperty());
+    	colVlrTotalD.setCellValueFactory(cellData -> cellData.getValue().vlrTotalProperty());
+    	colDataD.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
+    	
     	atualizaInvestimentoNaCompra();
     	atualizaLucroNaVenda();
+    	atualizaInvestimentoNaCompra();
 		atualizaTbl();
 	}
     
