@@ -492,7 +492,7 @@ public class SampleController {
     	
     	atualizaInvestimentoNaCompra();
     	atualizaLucroNaVenda();
-    	atualizaInvestimentoNaCompra();
+    	atualizaTotalRecebido();
 		atualizaTbl();
 	}
     
